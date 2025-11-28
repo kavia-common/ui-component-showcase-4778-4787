@@ -12,6 +12,13 @@
   --color-background: #f9fafb;
   --color-surface: #ffffff;
   --color-text: #111827;
+
+  /* Navbar tokens derived from design notes */
+  --nav-bg: rgba(255,255,255,0.9);
+  --nav-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
+  --accent: #3B82F6; /* blue-500 */
+  --accent-hover: #2563EB; /* blue-600 */
+  --accent-20: rgba(59,130,246,0.2);
 }
 
 /* Base defaults */
@@ -26,6 +33,7 @@ html, body, #root {
   .card {
     @apply bg-white rounded-xl shadow-soft border border-gray-100;
   }
+
   .btn {
     @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-200;
   }
@@ -39,14 +47,26 @@ html, body, #root {
     @apply btn border border-gray-300 text-gray-700 hover:bg-gray-50;
   }
 
-  /* Navbar links used in top navigation */
-  .nav-link {
-    @apply flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors;
+  /* Navbar active pill underline indicator (pseudo via box-shadow) */
+  .nav-pill-active {
+    position: relative;
   }
-  .nav-link-active {
-    @apply bg-blue-50 text-blue-700;
+  .nav-pill-active::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    bottom: -6px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
   }
-  .nav-link-inactive {
-    @apply text-gray-700 hover:bg-gray-50;
+}
+
+/* Respect reduced motion for subtle transitions */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
   }
 }

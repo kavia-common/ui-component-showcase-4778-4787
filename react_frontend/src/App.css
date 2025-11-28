@@ -26,6 +26,7 @@
   background-color: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
+  /* Note: main layout uses --nav-height for top offset, controlled by Navbar */
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
