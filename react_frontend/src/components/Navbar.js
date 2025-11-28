@@ -4,11 +4,10 @@ import { IconBell, IconCog, IconHelp, IconMenu, IconClose, IconSearch } from "./
 
 /**
  * PUBLIC_INTERFACE
- * Navbar implements a fixed top navigation with brand, primary nav, optional search,
- * and right-aligned utilities. It is responsive with hamburger collapse on small screens.
- * The header height is exposed via CSS var --nav-height so the main content can offset accordingly.
+ * Navbar implements the showcase design: solid purple bar, grid inner layout with brand, centered search,
+ * right-aligned nav links, theme switch, and CTA. Mobile collapses to hamburger.
+ * Exposes --nav-height for main content offset.
  */
-
 const LINKS = [
   { to: "/", label: "Overview", end: true },
   { to: "/accordion", label: "Accordion" },
@@ -24,15 +23,14 @@ const LINKS = [
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const NAV_HEIGHT = 68; // matches ~64–72px spec
-  const MAX_W = "max-w-7xl"; // ~1280px container
+  const [themeOn, setThemeOn] = useState(false);
+  const NAV_HEIGHT = 64;
 
   useEffect(() => {
     document.documentElement.style.setProperty("--nav-height", `${NAV_HEIGHT}px`);
   }, []);
 
   useEffect(() => {
-    // Close on route change (NavLink onClick calls setMobileOpen(false)), or Escape
     const onKey = (e) => {
       if (e.key === "Escape") setMobileOpen(false);
     };
@@ -41,21 +39,14 @@ export default function Navbar() {
   }, []);
 
   const NavItems = ({ onItemClick }) => (
-    <ul className="flex items-center gap-5">
+    <ul className="nav-links">
       {LINKS.map((l) => (
         <li key={l.to}>
           <NavLink
             to={l.to}
             end={!!l.end}
             onClick={() => onItemClick?.()}
-            className={({ isActive }) =>
-              [
-                "inline-flex items-center px-1.5 py-2 rounded-md text-sm font-medium transition-colors",
-                isActive
-                  ? "text-gray-900 nav-pill-active"
-                  : "text-gray-700 hover:text-gray-900 hover:bg-gray-50",
-              ].join(" ")
-            }
+            className={({ isActive }) => ["nav-link", isActive ? "active" : ""].filter(Boolean).join(" ")}
             aria-current={({ isActive }) => (isActive ? "page" : undefined)}
           >
             {l.label}
@@ -66,124 +57,120 @@ export default function Navbar() {
   );
 
   const Search = () => (
-    <div className="relative hidden lg:inline-flex items-center">
-      <IconSearch className="h-4 w-4 text-gray-400 absolute left-3 pointer-events-none" />
+    <div className="hidden md:block search" aria-hidden={false}>
+      <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" strokeWidth="1.5" />
+        <path d="M20 20l-3.5-3.5" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
       <input
-        type="text"
+        type="search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search components…"
-        className="h-10 w-[280px] pl-9 pr-3 rounded-lg border border-gray-300 bg-white text-sm text-gray-700 placeholder:text-gray-400
-                   focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+        placeholder="Search"
         aria-label="Search components"
       />
     </div>
   );
 
-  const IconButton = ({ label, children }) => (
-    <button
-      type="button"
-      aria-label={label}
-      className="inline-grid place-items-center h-10 w-10 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-50
-                 focus:outline-none focus:ring-2 focus:ring-blue-200"
-    >
-      {children}
-    </button>
-  );
-
   return (
     <>
-      <header
-        role="banner"
-        className="sticky top-0 z-[1000] bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/80 border-b border-gray-200 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.06)]"
-        style={{ height: NAV_HEIGHT }}
-      >
-        <div className={`${MAX_W} mx-auto h-full px-4 sm:px-6 lg:px-8`}>
-          <div className="h-full flex items-center justify-between gap-4">
-            {/* Left: Brand */}
-            <a href="/" className="flex items-center min-h-[44px] -ml-1 pr-2 focus:outline-none focus:ring-2 focus:ring-blue-200 rounded-md">
-              <div className="h-9 w-9 rounded-xl bg-blue-500/10 flex items-center justify-center ring-1 ring-blue-200">
-                <span className="text-blue-600 font-bold text-sm">UI</span>
-              </div>
-              <div className="ml-3">
-                <div className="text-base sm:text-lg font-semibold text-gray-900 leading-5">
-                  Ocean UI Showcase
-                </div>
-                <div className="text-[11px] text-gray-500 leading-4">
-                  Tailwind • Modern • Accessible
-                </div>
-              </div>
+      <header role="banner" className="navbar" style={{ height: NAV_HEIGHT }}>
+        <div className="container-max">
+          <div className="nav-inner">
+            {/* Brand cluster */}
+            <a href="/" className="brand focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 rounded">
+              <span className="logo" aria-hidden="true">
+                {/* simple sparkle/asterisk */}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 2l1.6 4.8L19 8l-5.4 1.2L12 14l-1.6-4.8L5 8l5.4-1.2L12 2z" />
+                </svg>
+              </span>
+              <span className="label">Components Showcase</span>
             </a>
 
-            {/* Middle: Primary Nav + Search */}
-            <div className="hidden md:flex items-center justify-start flex-1 min-w-0">
-              <div className="flex items-center gap-8">
-                <NavItems />
-                <Search />
-              </div>
-            </div>
+            {/* Center search */}
+            <Search />
 
-            {/* Right: Utilities + Mobile toggle */}
-            <div className="flex items-center gap-1 sm:gap-2">
-              <div className="hidden md:flex items-center">
-                <IconButton label="Notifications">
-                  <IconBell />
-                </IconButton>
-                <IconButton label="Help">
-                  <IconHelp />
-                </IconButton>
-                <IconButton label="Settings">
-                  <IconCog />
-                </IconButton>
-                <div className="mx-1 w-px h-6 bg-gray-200" aria-hidden="true" />
-                {/* Avatar */}
+            {/* Right-center nav links (desktop/tablet) */}
+            <nav className="hidden lg:block" aria-label="Primary">
+              <NavItems />
+            </nav>
+
+            {/* Actions: theme switch + CTA + utilities + hamburger */}
+            <div className="nav-actions">
+              <button
+                className={`theme-switch ${themeOn ? "on" : ""}`}
+                onClick={() => setThemeOn((v) => !v)}
+                aria-label="Toggle dark mode"
+              >
+                <span className="knob" />
+              </button>
+
+              <a href="/" className="cta-dark">Docs</a>
+
+              <div className="hidden md:flex items-center gap-1">
                 <button
                   type="button"
-                  className="h-9 w-9 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-semibold
-                             focus:outline-none focus:ring-2 focus:ring-blue-200"
-                  aria-label="User profile"
+                  aria-label="Notifications"
+                  className="inline-grid place-items-center w-10 h-10 rounded-lg text-white/90 hover:bg-white/10"
                 >
-                  A
+                  <IconBell className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Help"
+                  className="inline-grid place-items-center w-10 h-10 rounded-lg text-white/90 hover:bg-white/10"
+                >
+                  <IconHelp className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Settings"
+                  className="inline-grid place-items-center w-10 h-10 rounded-lg text-white/90 hover:bg-white/10"
+                >
+                  <IconCog className="h-5 w-5" />
                 </button>
               </div>
 
-              {/* Mobile search icon could be added; keeping minimal per notes */}
               <button
-                className="md:hidden inline-grid place-items-center h-10 w-10 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50
-                           focus:outline-none focus:ring-2 focus:ring-blue-200"
+                className="lg:hidden inline-grid place-items-center w-10 h-10 rounded-lg text-white hover:bg-white/10"
                 aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
                 aria-expanded={mobileOpen}
                 aria-controls="mobile-menu"
                 onClick={() => setMobileOpen((v) => !v)}
               >
-                {mobileOpen ? <IconClose /> : <IconMenu />}
+                {mobileOpen ? <IconClose className="h-5 w-5" /> : <IconMenu className="h-5 w-5" />}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile dropdown panel */}
         <div
           id="mobile-menu"
-          className={`md:hidden overflow-hidden transition-[max-height] duration-300 ease-out ${mobileOpen ? "max-h-[480px]" : "max-h-0"}`}
-          aria-label="Mobile component navigation"
+          className={`lg:hidden overflow-hidden transition-[max-height] duration-300 ease-out ${mobileOpen ? "max-h-[520px]" : "max-h-0"}`}
+          aria-label="Mobile navigation"
         >
-          <div className="px-4 pb-3">
-            <div className="mt-3">
-              <div className="relative mb-2">
-                <IconSearch className="h-4 w-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                <input
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search components…"
-                  className="h-10 w-full pl-9 pr-3 rounded-lg border border-gray-300 bg-white text-sm text-gray-700 placeholder:text-gray-400
-                             focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-                  aria-label="Search components"
-                />
+          <div className="container-max pt-3 pb-4">
+            <div className="mobile-panel p-3">
+              <div className="mb-2">
+                <div className="search" style={{ width: "100%", height: 36 }}>
+                  <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7" strokeWidth="1.5" />
+                    <path d="M20 20l-3.5-3.5" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                  <input
+                    type="search"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Search"
+                    aria-label="Search components"
+                    style={{ width: "100%" }}
+                  />
+                </div>
               </div>
-              <nav className="rounded-xl border border-gray-200 bg-white">
-                <ul className="divide-y divide-gray-200">
+              <nav aria-label="Mobile primary" className="mt-2">
+                <ul className="divide-y divide-gray-200 rounded-lg border border-gray-200 overflow-hidden">
                   {LINKS.map((l) => (
                     <li key={l.to}>
                       <NavLink
@@ -192,8 +179,8 @@ export default function Navbar() {
                         onClick={() => setMobileOpen(false)}
                         className={({ isActive }) =>
                           [
-                            "flex items-center justify-between px-3 py-3 text-sm",
-                            isActive ? "text-blue-700 bg-blue-50" : "text-gray-700 hover:bg-gray-50",
+                            "flex items-center justify-between px-4 py-3 text-sm",
+                            isActive ? "bg-indigo-50 text-indigo-700" : "text-gray-700 hover:bg-gray-50",
                           ].join(" ")
                         }
                         aria-current={({ isActive }) => (isActive ? "page" : undefined)}

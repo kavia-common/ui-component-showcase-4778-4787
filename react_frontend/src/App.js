@@ -15,14 +15,39 @@ import Navbar from './components/Navbar';
 // PUBLIC_INTERFACE
 function App() {
   /**
-   * Fixed top navbar with brand, nav, search, and utilities to match design notes.
+   * Fixed top navbar and hero layout matching the design notes.
    * Content area offsets by --nav-height to avoid overlap and preserve routing.
    */
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-text)]">
       <Navbar />
-      <main className="w-full" style={{ paddingTop: 'calc(var(--nav-height, 68px) + 16px)' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+      <main className="w-full" style={{ paddingTop: 'calc(var(--nav-height, 64px))' }}>
+        {/* Hero section as per design */}
+        <header className="hero">
+          <div className="container-max">
+            <div className="chip mt-2" aria-label="Components Showcase tag">
+              <span className="dot" aria-hidden="true" />
+              <span className="text-xs font-semibold">Components Showcase</span>
+            </div>
+
+            <div className="hero-card">
+              <h1>
+                UI Components <span className="highlight">Showcase</span>
+              </h1>
+              <p>
+                Explore modern, accessible React components styled with the Ocean Professional theme. Includes demos like
+                Accordion, Button, Carousel, Checkbox, Toast, and more.
+              </p>
+              <div className="hero-ctas">
+                <a className="btn btn-primary" href="#demos">Explore Demos</a>
+                <a className="btn btn-outline" href="#chatbot">Try Chatbot</a>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Routed content container */}
+        <div id="demos" className="container-max py-6">
           <div className="card p-4 sm:p-6">
             <Routes>
               <Route path="/" element={<Home />} />
