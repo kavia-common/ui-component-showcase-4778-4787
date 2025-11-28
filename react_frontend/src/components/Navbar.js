@@ -4,9 +4,8 @@ import { IconBell, IconCog, IconHelp, IconMenu, IconClose } from "./icons";
 
 /**
  * PUBLIC_INTERFACE
- * Navbar with brand on the left, primary links for Home (Hero), Accordion, Bento, Breadcrumbs,
- * and a "More" dropdown containing remaining demos. Preserves gradient background and
- * exposes --nav-height for main content offset. Mobile menu mirrors the same structure.
+ * Navbar arranged per layout spec: brand on the left, center search, primary links with a "More" dropdown,
+ * and actions on the right. Sticky with gradient background. Mobile menu mirrors structure.
  */
 const PRIMARY_LINKS = [
   { to: "/", label: "Home", end: true },
@@ -32,18 +31,18 @@ export default function Navbar() {
   const NAV_HEIGHT = 64;
   const location = useLocation();
 
-  // Keep CSS var updated
+  // Keep CSS var updated for main layout offset
   useEffect(() => {
     document.documentElement.style.setProperty("--nav-height", `${NAV_HEIGHT}px`);
   }, []);
 
-  // Close flyouts on route change
+  // Close panels on route change
   useEffect(() => {
     setMoreOpen(false);
     setMobileOpen(false);
   }, [location.pathname]);
 
-  // Escape closes panels
+  // Escape closes flyouts
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") {
@@ -68,7 +67,7 @@ export default function Navbar() {
     }
   }, [moreOpen]);
 
-  // Is any of the MORE links active? Used for active highlight on trigger
+  // Is any "More" link active? For active state on trigger
   const isMoreActive = MORE_LINKS.some((l) =>
     l.to === "/" ? location.pathname === "/" : location.pathname.startsWith(l.to)
   );
@@ -89,7 +88,6 @@ export default function Navbar() {
     </div>
   );
 
-  // Desktop primary nav with More dropdown
   const DesktopPrimary = () => (
     <ul className="nav-links items-center">
       {PRIMARY_LINKS.map((l) => (
@@ -146,7 +144,6 @@ export default function Navbar() {
     </ul>
   );
 
-  // Mobile structure: Primary items, then "More" group as collapsible list
   const MobileMenu = () => (
     <div
       id="mobile-menu"
@@ -173,7 +170,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Primary items */}
           <nav aria-label="Mobile primary" className="mt-2">
             <ul className="divide-y divide-gray-200 rounded-lg border border-gray-200 overflow-hidden">
               {PRIMARY_LINKS.map((l) => (
@@ -196,10 +192,8 @@ export default function Navbar() {
                 </li>
               ))}
 
-              {/* More header (non-link) */}
               <li className="bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-600">More</li>
 
-              {/* More items */}
               {MORE_LINKS.map((l) => (
                 <li key={l.to}>
                   <NavLink
@@ -226,80 +220,78 @@ export default function Navbar() {
   );
 
   return (
-    <>
-      <header role="banner" className="navbar" style={{ height: NAV_HEIGHT }}>
-        <div className="container-max">
-          <div className="nav-inner">
-            {/* Brand cluster (left) */}
-            <a href="/" className="brand focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 rounded" aria-label="Home">
-              <span className="logo" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M12 2l1.6 4.8L19 8l-5.4 1.2L12 14l-1.6-4.8L5 8l5.4-1.2L12 2z" />
-                </svg>
-              </span>
-              <span className="label">Components Showcase</span>
-            </a>
+    <header role="banner" className="navbar" style={{ height: NAV_HEIGHT }}>
+      <div className="container-max">
+        <div className="nav-inner">
+          {/* Brand cluster (left) */}
+          <a href="/" className="brand focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 rounded" aria-label="Home">
+            <span className="logo" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2l1.6 4.8L19 8l-5.4 1.2L12 14l-1.6-4.8L5 8l5.4-1.2L12 2z" />
+              </svg>
+            </span>
+            <span className="label">Components Showcase</span>
+          </a>
 
-            {/* Center search */}
-            <Search />
+          {/* Center search */}
+          <Search />
 
-            {/* Desktop/Tablet primary nav + More */}
-            <nav className="hidden lg:block" aria-label="Primary">
-              <DesktopPrimary />
-            </nav>
+          {/* Desktop/Tablet primary nav + More */}
+          <nav className="hidden lg:block" aria-label="Primary">
+            <DesktopPrimary />
+          </nav>
 
-            {/* Actions + hamburger */}
-            <div className="nav-actions">
+          {/* Actions + hamburger */}
+          <div className="nav-actions">
+            <button
+              className={`theme-switch ${themeOn ? "on" : ""}`}
+              onClick={() => setThemeOn((v) => !v)}
+              aria-label="Toggle dark mode"
+            >
+              <span className="knob" />
+            </button>
+
+            <a href="/" className="cta-dark">Docs</a>
+
+            <div className="hidden md:flex items-center gap-1">
               <button
-                className={`theme-switch ${themeOn ? "on" : ""}`}
-                onClick={() => setThemeOn((v) => !v)}
-                aria-label="Toggle dark mode"
+                type="button"
+                aria-label="Notifications"
+                className="inline-grid place-items-center w-10 h-10 rounded-lg text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
               >
-                <span className="knob" />
+                <IconBell className="h-5 w-5" />
               </button>
-
-              <a href="/" className="cta-dark">Docs</a>
-
-              <div className="hidden md:flex items-center gap-1">
-                <button
-                  type="button"
-                  aria-label="Notifications"
-                  className="inline-grid place-items-center w-10 h-10 rounded-lg text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-                >
-                  <IconBell className="h-5 w-5" />
-                </button>
-                <button
-                  type="button"
-                  aria-label="Help"
-                  className="inline-grid place-items-center w-10 h-10 rounded-lg text-white/90 hover:bg-white/10"
-                >
-                  <IconHelp className="h-5 w-5" />
-                </button>
-                <button
-                  type="button"
-                  aria-label="Settings"
-                  className="inline-grid place-items-center w-10 h-10 rounded-lg text-white/90 hover:bg-white/10"
-                >
-                  <IconCog className="h-5 w-5" />
-                </button>
-              </div>
-
               <button
-                className="lg:hidden inline-grid place-items-center w-10 h-10 rounded-lg text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-                aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
-                aria-expanded={mobileOpen}
-                aria-controls="mobile-menu"
-                onClick={() => setMobileOpen((v) => !v)}
+                type="button"
+                aria-label="Help"
+                className="inline-grid place-items-center w-10 h-10 rounded-lg text-white/90 hover:bg-white/10"
               >
-                {mobileOpen ? <IconClose className="h-5 w-5" /> : <IconMenu className="h-5 w-5" />}
+                <IconHelp className="h-5 w-5" />
+              </button>
+              <button
+                type="button"
+                aria-label="Settings"
+                className="inline-grid place-items-center w-10 h-10 rounded-lg text-white/90 hover:bg-white/10"
+              >
+                <IconCog className="h-5 w-5" />
               </button>
             </div>
+
+            <button
+              className="lg:hidden inline-grid place-items-center w-10 h-10 rounded-lg text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+              aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-menu"
+              onClick={() => setMobileOpen((v) => !v)}
+            >
+              {mobileOpen ? <IconClose className="h-5 w-5" /> : <IconMenu className="h-5 w-5" />}
+            </button>
           </div>
         </div>
+      </div>
 
-        {/* Mobile dropdown panel mirrors structure */}
-        <MobileMenu />
-      </header>
-    </>
+      {/* Mobile dropdown panel mirrors structure */}
+      <MobileMenu />
+    </header>
   );
 }

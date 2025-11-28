@@ -3,32 +3,32 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Ocean Professional + Showcase design tokens (from components_showcase_design_notes.md) */
+/* Ocean Professional + Showcase design tokens (from design notes) */
 :root {
   /* Core palette */
   --color-primary: #2563EB;
   --color-secondary: #F59E0B;
   --color-success: #F59E0B;
   --color-error: #EF4444;
-  --color-background: #F5F7FB; /* canvas per notes */
+  --color-background: #F5F7FB;
   --color-surface: #FFFFFF;
-  --color-text: #0F172A;        /* slate-900 */
+  --color-text: #0F172A;
 
-  /* App-wide background gradient (requested) */
+  /* Page background must use this gradient (spec) */
   --app-gradient: linear-gradient(87deg, #95bff0 20%, #ac7de9 80%);
 
-  /* Showcase-specific */
-  /* Preserve navbar/footer dedicated gradient override */
+  /* Navbar/Footer keep their purple/indigo gradient */
   --bg-navbar: linear-gradient(45deg, #af2497 10%, #902d9a 20%, #1840a0 100%);
-  /* Hero retains its own gradient token; surfaces remain readable on white */
+  /* Hero background retains same gradient family for continuity */
   --bg-hero-gradient: linear-gradient(45deg, #af2497 10%, #902d9a 20%, #1840a0 100%);
-  --text-secondary: #334155;    /* slate-700 */
+
+  --text-secondary: #334155;
   --text-on-dark: #FFFFFF;
   --text-on-accent: #FFFFFF;
 
-  --accent-primary: #7C3AED;           /* violet-600 */
-  --accent-primary-strong: #6D28D9;    /* violet-700 */
-  --accent-secondary: #4F46E5;         /* indigo-600 */
+  --accent-primary: #7C3AED;
+  --accent-primary-strong: #6D28D9;
+  --accent-secondary: #4F46E5;
   --accent-blue: #2563EB;
   --accent-pink: #EC4899;
 
@@ -67,9 +67,8 @@
 /* Base defaults */
 html, body, #root {
   height: 100%;
-  /* Use app gradient as page canvas; surfaces (cards, hero card) remain white for readability */
   background: var(--app-gradient, var(--color-background));
-  background-attachment: fixed; /* avoid scroll jank on tall pages */
+  background-attachment: fixed;
   color: var(--color-text);
   font-family: "Helvetica Neue", Arial, sans-serif;
 }
@@ -82,7 +81,6 @@ html, body, #root {
     padding-inline: clamp(16px, 4vw, 48px);
   }
 
-  /* Reusable app gradient utility */
   .bg-app-gradient {
     background: var(--app-gradient);
     background-attachment: fixed;
@@ -103,10 +101,7 @@ html, body, #root {
     font-size: 14px;
     line-height: 20px;
   }
-  .btn-primary {
-    background: var(--btn-primary-bg);
-    color: var(--text-on-accent);
-  }
+  .btn-primary { background: var(--btn-primary-bg); color: var(--text-on-accent); }
   .btn-primary:hover { background: var(--btn-primary-bg-hover); }
   .btn-outline {
     background: var(--btn-neutral-bg);
@@ -115,14 +110,14 @@ html, body, #root {
   }
   .btn-outline:hover { background: #F9FAFB; }
 
-  /* Navbar styles to match notes */
+  /* Navbar styles */
   .navbar {
     position: sticky;
     top: 0;
     z-index: 1000;
     background: var(--bg-navbar);
     height: 64px;
-    color: #FFFFFF; /* ensure strong contrast on gradient */
+    color: #FFFFFF;
   }
   .nav-inner {
     height: 64px;
@@ -143,7 +138,7 @@ html, body, #root {
     width: 28px;
     height: 28px;
     border-radius: 999px;
-    background: #9F7AEA; /* violet-400 */
+    background: #9F7AEA;
     display: grid;
     place-items: center;
     color: white;
@@ -317,12 +312,12 @@ html, body, #root {
   }
 }
 
-/* Respect reduced motion */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }
 
-/* Responsiveness per notes */
+/* Responsive behavior per spec */
 @media (max-width: 1024px) {
   .nav-inner { grid-template-columns: auto 1fr auto; }
   .nav-links { display: none; }
@@ -330,4 +325,5 @@ html, body, #root {
 }
 @media (max-width: 768px) {
   .search { display: none; }
+  .hero { padding-bottom: 32px; }
 }

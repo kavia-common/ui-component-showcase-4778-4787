@@ -15,28 +15,32 @@ import Navbar from './components/Navbar';
 // PUBLIC_INTERFACE
 function App() {
   /**
-   * Fixed top navbar and hero layout matching the design notes.
-   * Content area offsets by --nav-height to avoid overlap and preserve routing.
+   * Fixed top navbar and hero layout matching the specification.
+   * Main canvas uses the required page background gradient while navbar/footer keep their own gradient.
+   * Routes and active link states remain unchanged.
    */
   return (
     <div className="min-h-screen bg-app-gradient text-[var(--color-text)]">
       <Navbar />
-      <main className="w-full" style={{ paddingTop: 'calc(var(--nav-height, 64px))' }}>
-        {/* Hero section as per design */}
-        <header className="hero">
+      {/* Top offset equals nav height to prevent overlap */}
+      <main className="w-full" style={{ paddingTop: 'var(--nav-height, 64px)' }}>
+        {/* Hero section */}
+        <header className="hero" role="region" aria-label="Hero">
           <div className="container-max">
+            {/* Eyebrow chip aligned to container left, positioned under navbar */}
             <div className="chip mt-2" aria-label="Components Showcase tag">
               <span className="dot" aria-hidden="true" />
               <span className="text-xs font-semibold">Components Showcase</span>
             </div>
 
+            {/* Inner hero card with headline, body, and CTAs */}
             <div className="hero-card">
               <h1>
                 UI Components <span className="highlight">Showcase</span>
               </h1>
               <p>
-                Explore modern, accessible React components styled with the Ocean Professional theme. Includes demos like
-                Accordion, Button, Carousel, Checkbox, Toast, and more.
+                Explore modern, accessible React components styled with the Ocean Professional theme. Includes demos
+                like Accordion, Button, Carousel, Checkbox, Toast, and more.
               </p>
               <div className="hero-ctas">
                 <a className="btn btn-primary" href="#demos">Explore Demos</a>
@@ -46,8 +50,8 @@ function App() {
           </div>
         </header>
 
-        {/* Routed content container */}
-        <div id="demos" className="container-max py-6">
+        {/* Routed content container with spacing per spec */}
+        <section id="demos" className="container-max py-6">
           <div className="card p-4 sm:p-6">
             <Routes>
               <Route path="/" element={<Home />} />
@@ -61,25 +65,19 @@ function App() {
               <Route path="/toast" element={<ToastDemo />} />
             </Routes>
           </div>
-          <footer
-            className="mt-6 rounded-xl overflow-hidden"
-            aria-label="Application footer"
-          >
-            <div
-              className="px-4 py-3 text-xs"
-              style={{ background: "var(--bg-navbar)", color: "#FFFFFF" }}
-            >
+
+          {/* Footer retains navbar gradient as per spec */}
+          <footer className="mt-6 rounded-xl overflow-hidden" aria-label="Application footer">
+            <div className="px-4 py-3 text-xs" style={{ background: 'var(--bg-navbar)', color: '#FFFFFF' }}>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <span>
                   Environment: {process.env.REACT_APP_NODE_ENV || 'development'} · Port: {process.env.REACT_APP_PORT || '3000'}
                 </span>
-                <span className="opacity-90">
-                  © {new Date().getFullYear()} Components Showcase
-                </span>
+                <span className="opacity-90">© {new Date().getFullYear()} Components Showcase</span>
               </div>
             </div>
           </footer>
-        </div>
+        </section>
       </main>
     </div>
   );
