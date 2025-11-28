@@ -19,7 +19,7 @@ function App() {
    * Content area offsets by --nav-height to avoid overlap and preserve routing.
    */
   return (
-    <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-text)]">
+    <div className="min-h-screen bg-app-gradient text-[var(--color-text)]">
       <Navbar />
       <main className="w-full" style={{ paddingTop: 'calc(var(--nav-height, 64px))' }}>
         {/* Hero section as per design */}

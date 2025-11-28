@@ -14,9 +14,13 @@
   --color-surface: #FFFFFF;
   --color-text: #0F172A;        /* slate-900 */
 
+  /* App-wide background gradient (requested) */
+  --app-gradient: linear-gradient(87deg, #95bff0 20%, #ac7de9 80%);
+
   /* Showcase-specific */
-  /* Updated to requested gradient for navbar/footer and unify hero */
+  /* Preserve navbar/footer dedicated gradient override */
   --bg-navbar: linear-gradient(45deg, #af2497 10%, #902d9a 20%, #1840a0 100%);
+  /* Hero retains its own gradient token; surfaces remain readable on white */
   --bg-hero-gradient: linear-gradient(45deg, #af2497 10%, #902d9a 20%, #1840a0 100%);
   --text-secondary: #334155;    /* slate-700 */
   --text-on-dark: #FFFFFF;
@@ -63,7 +67,9 @@
 /* Base defaults */
 html, body, #root {
   height: 100%;
-  background: var(--color-background);
+  /* Use app gradient as page canvas; surfaces (cards, hero card) remain white for readability */
+  background: var(--app-gradient, var(--color-background));
+  background-attachment: fixed; /* avoid scroll jank on tall pages */
   color: var(--color-text);
   font-family: "Helvetica Neue", Arial, sans-serif;
 }
@@ -74,6 +80,12 @@ html, body, #root {
     max-width: 1200px;
     margin-inline: auto;
     padding-inline: clamp(16px, 4vw, 48px);
+  }
+
+  /* Reusable app gradient utility */
+  .bg-app-gradient {
+    background: var(--app-gradient);
+    background-attachment: fixed;
   }
 
   .card {
