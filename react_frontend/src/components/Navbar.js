@@ -112,7 +112,7 @@ export default function Navbar() {
                 <button
                   type="button"
                   aria-label="Notifications"
-                  className="inline-grid place-items-center w-10 h-10 rounded-lg text-white/90 hover:bg-white/10"
+                  className="inline-grid place-items-center w-10 h-10 rounded-lg text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                 >
                   <IconBell className="h-5 w-5" />
                 </button>
@@ -133,7 +133,7 @@ export default function Navbar() {
               </div>
 
               <button
-                className="lg:hidden inline-grid place-items-center w-10 h-10 rounded-lg text-white hover:bg-white/10"
+                className="lg:hidden inline-grid place-items-center w-10 h-10 rounded-lg text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                 aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
                 aria-expanded={mobileOpen}
                 aria-controls="mobile-menu"
@@ -150,6 +150,7 @@ export default function Navbar() {
           id="mobile-menu"
           className={`lg:hidden overflow-hidden transition-[max-height] duration-300 ease-out ${mobileOpen ? "max-h-[520px]" : "max-h-0"}`}
           aria-label="Mobile navigation"
+          style={{ background: "var(--bg-navbar)" }}
         >
           <div className="container-max pt-3 pb-4">
             <div className="mobile-panel p-3">

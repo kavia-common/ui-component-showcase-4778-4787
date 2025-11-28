@@ -15,8 +15,9 @@
   --color-text: #0F172A;        /* slate-900 */
 
   /* Showcase-specific */
-  --bg-navbar: #6F59F6; /* solid purple navbar */
-  --bg-hero-gradient: linear-gradient(90deg, #A456E4 0%, #6F59F6 55%, #4A7DF7 100%);
+  /* Updated to requested gradient for navbar/footer and unify hero */
+  --bg-navbar: linear-gradient(45deg, #af2497 10%, #902d9a 20%, #1840a0 100%);
+  --bg-hero-gradient: linear-gradient(45deg, #af2497 10%, #902d9a 20%, #1840a0 100%);
   --text-secondary: #334155;    /* slate-700 */
   --text-on-dark: #FFFFFF;
   --text-on-accent: #FFFFFF;
@@ -109,7 +110,7 @@ html, body, #root {
     z-index: 1000;
     background: var(--bg-navbar);
     height: 64px;
-    color: var(--text-on-dark);
+    color: #FFFFFF; /* ensure strong contrast on gradient */
   }
   .nav-inner {
     height: 64px;
@@ -179,7 +180,7 @@ html, body, #root {
     gap: 18px;
   }
   .nav-link {
-    color: rgba(255,255,255,0.9);
+    color: rgba(255,255,255,0.95);
     font-weight: 600;
     font-size: 14px;
     line-height: 20px;
@@ -187,9 +188,11 @@ html, body, #root {
     border-radius: var(--radius-sm);
     text-decoration: none;
   }
-  .nav-link:hover {
-    background: rgba(255,255,255,0.08);
+  .nav-link:hover,
+  .nav-link:focus-visible {
+    background: rgba(255,255,255,0.10);
     color: #FFFFFF;
+    outline: none;
   }
   .nav-link.active {
     color: #FFFFFF;
@@ -225,7 +228,7 @@ html, body, #root {
     padding: 0 14px;
     border-radius: var(--radius-pill);
     background: #1F2937;
-    color: white;
+    color: #FFFFFF;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -248,7 +251,7 @@ html, body, #root {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    color: white;
+    color: #FFFFFF;
     background: var(--chip-bg);
     border: 1px solid var(--chip-border);
     padding: 6px 12px;
