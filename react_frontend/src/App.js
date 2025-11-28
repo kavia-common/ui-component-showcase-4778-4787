@@ -15,42 +15,25 @@ import Navbar from './components/Navbar';
 // PUBLIC_INTERFACE
 function App() {
   /**
-   * Fixed top navbar and hero layout matching the specification.
-   * Main canvas uses the required page background gradient while navbar/footer keep their own gradient.
-   * Routes and active link states remain unchanged.
+   * Fixed top navbar and simplified hero heading.
+   * Preserves app-wide page gradient and navbar/footer gradient.
    */
   return (
     <div className="min-h-screen bg-app-gradient text-[var(--color-text)]">
       <Navbar />
-      {/* Top offset equals nav height to prevent overlap */}
       <main className="w-full" style={{ paddingTop: 'var(--nav-height, 64px)' }}>
-        {/* Hero section */}
-        <header className="hero" role="region" aria-label="Hero">
+        {/* Simplified Hero Section */}
+        <header className="hero" role="region" aria-label="Hero Section">
           <div className="container-max">
-            {/* Eyebrow chip aligned to container left, positioned under navbar */}
-            <div className="chip mt-2" aria-label="Components Showcase tag">
-              <span className="dot" aria-hidden="true" />
-              <span className="text-xs font-semibold">Components Showcase</span>
-            </div>
-
-            {/* Inner hero card with headline, body, and CTAs */}
             <div className="hero-card">
-              <h1>
+              <h1 className="text-center">
                 UI Components <span className="highlight">Showcase</span>
               </h1>
-              <p>
-                Explore modern, accessible React components styled with the Ocean Professional theme. Includes demos
-                like Accordion, Button, Carousel, Checkbox, Toast, and more.
-              </p>
-              <div className="hero-ctas">
-                <a className="btn btn-primary" href="#demos">Explore Demos</a>
-                <a className="btn btn-outline" href="#chatbot">Try Chatbot</a>
-              </div>
             </div>
           </div>
         </header>
 
-        {/* Routed content container with spacing per spec */}
+        {/* Routed content */}
         <section id="demos" className="container-max py-6">
           <div className="card p-4 sm:p-6">
             <Routes>
@@ -66,7 +49,7 @@ function App() {
             </Routes>
           </div>
 
-          {/* Footer retains navbar gradient as per spec */}
+          {/* Footer retains navbar gradient */}
           <footer className="mt-6 rounded-xl overflow-hidden" aria-label="Application footer">
             <div className="px-4 py-3 text-xs" style={{ background: 'var(--bg-navbar)', color: '#FFFFFF' }}>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
