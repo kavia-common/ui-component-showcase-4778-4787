@@ -1,0 +1,50 @@
+/* Tailwind directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ocean Professional CSS variables */
+:root {
+  --color-primary: #2563EB;
+  --color-secondary: #F59E0B;
+  --color-success: #F59E0B;
+  --color-error: #EF4444;
+  --color-background: #f9fafb;
+  --color-surface: #ffffff;
+  --color-text: #111827;
+}
+
+/* Base defaults */
+html, body, #root {
+  height: 100%;
+  background: var(--color-background);
+  color: var(--color-text);
+}
+
+/* Utility layer for shared components */
+@layer components {
+  .card {
+    @apply bg-white rounded-xl shadow-soft border border-gray-100;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-200;
+  }
+  .btn-primary {
+    @apply btn bg-primary text-white hover:bg-blue-600 focus:ring-2 focus:ring-blue-200 focus:outline-none;
+  }
+  .btn-secondary {
+    @apply btn bg-secondary text-white hover:bg-amber-500 focus:ring-2 focus:ring-amber-200 focus:outline-none;
+  }
+  .btn-outline {
+    @apply btn border border-gray-300 text-gray-700 hover:bg-gray-50;
+  }
+  .nav-link {
+    @apply flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors;
+  }
+  .nav-link-active {
+    @apply bg-blue-50 text-blue-700;
+  }
+  .nav-link-inactive {
+    @apply text-gray-700 hover:bg-gray-50;
+  }
+}
