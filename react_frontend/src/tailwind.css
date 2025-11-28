@@ -38,6 +38,8 @@ html, body, #root {
   .btn-outline {
     @apply btn border border-gray-300 text-gray-700 hover:bg-gray-50;
   }
+
+  /* Navbar links used in top navigation */
   .nav-link {
     @apply flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors;
   }
